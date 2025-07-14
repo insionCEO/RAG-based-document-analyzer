@@ -1,11 +1,3 @@
-# 📄 Paperless-AI
-
-[![GitHub commit activity](https://img.shields.io/github/commit-activity/t/clusterzx/paperless-ai)](https://github.com/clusterzx/paperless-ai/commits/main)
-[![Docker Pulls](https://img.shields.io/docker/pulls/clusterzx/paperless-ai)](https://hub.docker.com/r/clusterzx/paperless-ai)
-[![GitHub Stars](https://img.shields.io/github/stars/clusterzx)](https://github.com/clusterzx)
-[![License](https://img.shields.io/github/license/clusterzx/paperless-ai?cacheSeconds=1)](LICENSE)
-
----
 
 **Paperless-AI** is an AI-powered extension for [Paperless-ngx](https://github.com/paperless-ngx/paperless-ngx) that brings automatic document classification, smart tagging, and semantic search using OpenAI-compatible APIs and Ollama.
 
@@ -64,7 +56,7 @@ Powered by **Retrieval-Augmented Generation (RAG)**, you can now search semantic
 > ⚠️ **First-time install:** Restart the container **after completing setup** (API keys, preferences) to build RAG index.  
 > 🔁 Not required for updates.
 
-📘 [Installation Wiki](https://github.com/clusterzx/paperless-ai/wiki/2.-Installation)
+📘 [Installation Wiki](https://github.com/insionCEO/RAG-based-document-analyzer/wiki/2.-Installation)
 
 ---
 
@@ -116,8 +108,8 @@ Then open a Pull Request via GitHub.
 
 ## 🆘 Support & Community
 
-- [Issues](https://github.com/clusterzx/paperless-ai/issues)
-- [Discord](https://discord.gg/AvNekAfK38)
+- [Issues](https://github.com/insionCEO/RAG-based-document-analyzer/issues)
+
 
 ---
 
