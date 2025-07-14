@@ -1,0 +1,845 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="favicon.ico"><favicon href="favicon.ico">
+    <title>Paperless AI - AI Captain, Documents Ahead</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Fira+Code:wght@400;500&display=swap');
+
+        :root {
+            --primary: #9333EA;
+            --secondary: #4F46E5;
+            --accent: #2DD4BF;
+            --text: #F8FAFC;
+            --bg: #2D1B69;
+            --card-bg: rgba(255, 255, 255, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Add particle canvas styling */
+        #particle-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Ensure content stays above particles */
+        nav, header, section, footer {
+            position: relative;
+            z-index: 1;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: var(--text);
+            background: linear-gradient(135deg, var(--bg), var(--primary));
+            min-height: 100vh;
+        }
+
+        nav {
+            background: rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(10px);
+            padding: 1rem;
+            position: fixed;
+            width: 100%;
+            z-index: 1000;
+        }
+
+        .nav-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.5rem;
+        }
+
+        .logo i {
+            color: var(--accent);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: var(--text);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent);
+        }
+
+        header {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .hero-content {
+            flex: 1;
+            padding-right: 2rem;
+        }
+
+        .hero-image {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .hero-image img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(45deg, var(--accent), #FFFFFF);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            padding: 4rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .feature-card {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 2rem;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: transform 0.3s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .feature-icon {
+            font-size: 2rem;
+            color: var(--accent);
+            margin-bottom: 1rem;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 1rem 2rem;
+            background: linear-gradient(45deg, var(--accent), var(--secondary));
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            margin-top: 2rem;
+            transition: transform 0.3s;
+        }
+
+        .cta-button:hover {
+            transform: scale(1.05);
+        }
+
+        .section-header {
+        text-align: center;
+        max-width: 800px;
+        margin: 0 auto 3rem auto;
+        padding: 0 2rem;
+    }
+
+    .section-header h2 {
+        font-size: 2.5rem;
+        margin-bottom: 1rem;
+        background: linear-gradient(45deg, var(--accent), #FFFFFF);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .section-description {
+        font-size: 1.2rem;
+        color: var(--text);
+        opacity: 0.9;
+    }
+
+    .screenshot-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+        gap: 2rem;
+        padding: 0 2rem;
+        max-width: 1400px;
+        margin: 0 auto;
+    }
+
+    .screenshot-card {
+        background: var(--card-bg);
+        border-radius: 20px;
+        overflow: hidden;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        position: relative;
+        cursor: pointer;
+        transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .screenshot-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    }
+
+    .screenshot-card img {
+        width: 100%;
+        height: 300px;
+        object-fit: cover;
+        transition: transform 0.3s;
+    }
+
+    .screenshot-card:hover img {
+        transform: scale(1.05);
+    }
+
+    .screenshot-overlay {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+        padding: 2rem;
+        color: white;
+        transform: translateY(100%);
+        transition: transform 0.3s;
+    }
+
+    .screenshot-card:hover .screenshot-overlay {
+        transform: translateY(0);
+    }
+
+    .screenshot-overlay h3 {
+        font-size: 1.5rem;
+        margin-bottom: 0.5rem;
+        color: var(--accent);
+    }
+
+    .screenshot-overlay p {
+        font-size: 0.9rem;
+        opacity: 0.9;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+        .section-header h2 {
+            font-size: 2rem;
+        }
+
+        .section-description {
+            font-size: 1rem;
+        }
+
+        .screenshot-grid {
+            padding: 0 1rem;
+        }
+
+        .screenshot-card {
+            min-height: 200px;
+        }
+    }
+        .terminal-section {
+            max-width: 1000px;
+            margin: 4rem auto;
+            padding: 2rem;
+        }
+
+        .terminal-window {
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 12px;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .terminal-header {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 1rem;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .terminal-dots {
+            display: flex;
+            gap: 8px;
+            margin-right: 1rem;
+        }
+
+        .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .dot-red { background: #FF5F56; }
+        .dot-yellow { background: #FFBD2E; }
+        .dot-green { background: #27C93F; }
+
+        .terminal-title {
+            color: var(--text);
+            font-size: 0.9rem;
+            font-family: 'Fira Code', monospace;
+            opacity: 0.8;
+        }
+
+        .terminal-content {
+            padding: 1.5rem;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        .code-block {
+            position: relative;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+
+        .code-block pre {
+            margin: 0;
+            white-space: pre-wrap;
+            word-break: break-all;
+        }
+
+        .code-block code {
+            color: #A0AEC0;
+        }
+
+        .copy-button {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            border-radius: 4px;
+            padding: 0.4rem;
+            color: var(--text);
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .copy-button:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .terminal-tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .terminal-tab {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            color: var(--text);
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .terminal-tab.active {
+            background: var(--accent);
+            border-color: var(--accent);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .lightbox {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 1100;
+            padding: 2rem;
+            backdrop-filter: blur(10px);
+        }
+
+        .lightbox.active {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .close-lightbox {
+            position: absolute;
+            top: 1rem;
+            right: 2rem;
+            color: white;
+            font-size: 2rem;
+            cursor: pointer;
+            z-index: 1101;
+        }
+
+        #lightbox-img {
+            max-width: 90%;
+            max-height: 80vh;
+            object-fit: contain;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .lightbox-caption {
+            color: white;
+            margin-top: 1rem;
+            text-align: center;
+            font-size: 1.2rem;
+        }
+
+        footer {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 4rem 2rem;
+            margin-top: 4rem;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                text-align: center;
+                padding-top: 6rem;
+            }
+
+            .hero-content {
+                padding-right: 0;
+                margin-bottom: 2rem;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            h1 {
+                font-size: 2.5rem;
+            }
+
+            .terminal-section {
+                padding: 1rem;
+            }
+
+            .terminal-tabs {
+                flex-wrap: wrap;
+            }
+        }
+    </style>
+</head>
+<body>
+    <canvas id="particle-canvas"></canvas>
+    <nav>
+        <div class="nav-content">
+            <a href="#" class="logo">
+                <img src="ppai_icon.png" alt="Paperless AI Logo" style="height: 60px;">
+                Paperless AI
+            </a>
+            <div class="nav-links">
+                <a href="#features">Features</a>
+                <a href="#screenshots">Screenshots</a>
+                <a href="#installation">Installation</a>
+                <a href="https://github.com/clusterzx/paperless-ai/wiki/1.-Home">Documentation</a>
+            </div>
+        </div>
+    </nav>
+
+    <header>
+        <div class="hero-content">
+            <h1>AI Captain, Documents Ahead</h1>
+            <p>The most advanced AI companion for Paperless-NGX. Transform your document management with powerful AI-driven automation and insights.</p>
+            <a href="#features" class="cta-button">Explore Features</a>
+        </div>
+        <div class="hero-image">
+            <img src="hero.png" alt="Paperless AI Dashboard" />
+        </div>
+    </header>
+
+    <section id="features" class="features-grid">
+        <div class="feature-card">
+            <i class="fas fa-message feature-icon"></i>
+            <h3>Document Chat</h3>
+            <p>Interact with your documents through natural conversation. Ask questions and get instant, AI-powered responses.</p>
+        </div>
+        <div class="feature-card">
+            <i class="fas fa-code feature-icon"></i>
+            <h3>AI Playground</h3>
+            <p>Experiment with different AI models and customize document processing workflows to suit your needs.</p>
+        </div>
+        <div class="feature-card">
+            <i class="fas fa-history feature-icon"></i>
+            <h3>Smart History</h3>
+            <p>Keep track of all document interactions and AI processing with detailed historical records.</p>
+        </div>
+        <div class="feature-card">
+            <i class="fas fa-gear feature-icon"></i>
+            <h3>Custom Settings</h3>
+            <p>Fine-tune your AI processing parameters and document management preferences with ease.</p>
+        </div>
+    </section>
+
+    <section id="screenshots">
+        <div class="section-header">
+            <h2>See It In Action</h2>
+            <p class="section-description">Experience the power of AI-driven document management firsthand</p>
+        </div>
+        <div class="screenshot-grid">
+            <div class="screenshot-card" onclick="openLightbox(this)">
+                <img src="chat.png" alt="Document Chat Interface" />
+                <div class="screenshot-overlay">
+                    <h3>Document Chat</h3>
+                    <p>Interactive AI-powered document conversations</p>
+                </div>
+            </div>
+            <div class="screenshot-card" onclick="openLightbox(this)">
+                <img src="playground.png" alt="AI Playground Interface" />
+                <div class="screenshot-overlay">
+                    <h3>AI Playground</h3>
+                    <p>Experiment with different AI models and parameters</p>
+                </div>
+            </div>
+            <div class="screenshot-card" onclick="openLightbox(this)">
+                <img src="history.png" alt="Document History Interface" />
+                <div class="screenshot-overlay">
+                    <h3>History View</h3>
+                    <p>Track and manage your document processing history</p>
+                </div>
+            </div>
+            <div class="screenshot-card" onclick="openLightbox(this)">
+                <img src="settings.png" alt="Settings Interface" />
+                <div class="screenshot-overlay">
+                    <h3>Settings</h3>
+                    <p>Configure your AI and document processing preferences</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section id="installation" class="terminal-section">
+        <h2>Installation</h2>
+        <div class="terminal-tabs">
+            <div class="terminal-tab active" data-tab="docker">Docker</div>
+            <div class="terminal-tab" data-tab="manual">Manual Install</div>
+            <div class="terminal-tab" data-tab="config">Configuration</div>
+        </div>
+
+        <div class="terminal-window">
+            <div class="terminal-header">
+                <div class="terminal-dots">
+                    <span class="dot dot-red"></span>
+                    <span class="dot dot-yellow"></span>
+                    <span class="dot dot-green"></span>
+                </div>
+                <span class="terminal-title">paperless-ai installation</span>
+            </div>
+
+            <div class="terminal-content">
+                <div class="tab-content active" id="docker-content">
+                    <div class="command-line">
+                        <span class="prompt">$</span>
+                        <span class="command">Quick start with Docker</span>
+                    </div>
+                    <div class="code-block">
+                        <button class="copy-button">
+                            <i class="far fa-copy"></i>
+                            Copy
+                        </button>
+                        <pre><code>docker pull clusterzx/paperless-ai:latest
+
+docker run -d \
+    --name paperless-ai \
+    --network bridge \
+    -v paperless-ai_data:/app/data \
+    -p 3000:3000 \
+    --restart unless-stopped \
+    clusterzx/paperless-ai
+                          </code></pre>
+                    </div>
+                </div>
+
+                <div class="tab-content" id="manual-content">
+                    <div class="command-line">
+                        <span class="prompt">$</span>
+                        <span class="command">Manual installation steps</span>
+                    </div>
+                    <div class="code-block">
+                        <button class="copy-button">
+                            <i class="far fa-copy"></i>
+                            Copy
+                        </button>
+                        <pre><code>git clone https://github.com/clusterzx/paperless-ai.git
+cd paperless-ai
+pip install -r requirements.txt
+python main.py</code></pre>
+                    </div>
+                </div>
+
+                <div class="tab-content" id="config-content">
+                    <div class="command-line">
+                        <span class="prompt">$</span>
+                        <span class="command">Configuration file setup</span>
+                    </div>
+                    <div class="code-block">
+                        <button class="copy-button">
+                            <i class="far fa-copy"></i>
+                            Copy
+                        </button>
+                        <pre><code>Goto http://your-paperless-ai-instance/setup</code></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Lightbox -->
+    <div id="lightbox" class="lightbox" onclick="closeLightbox()">
+        <span class="close-lightbox">&times;</span>
+        <img id="lightbox-img" src="" alt="Enlarged screenshot">
+        <div class="lightbox-caption"></div>
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>About</h3>
+                <p>Paperless AI is revolutionizing document management with cutting-edge AI technology.</p>
+            </div>
+            <div class="footer-section">
+                <h3>Resources</h3>
+                <a href="#">Documentation</a>
+                <a href="#">API Reference</a>
+                <a href="#">Community</a>
+            </div>
+            <div class="footer-section">
+                <h3>Connect</h3>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-github"></i></a>
+                    <a href="#"><i class="fab fa-discord"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Intersection Observer for animations
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.feature-card, .screenshot-card').forEach(card => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(20px)';
+            card.style.transition = 'opacity 0.5s, transform 0.5s';
+            observer.observe(card);
+        });
+
+        // Lightbox functionality
+        function openLightbox(card) {
+            const lightbox = document.getElementById('lightbox');
+            const lightboxImg = document.getElementById('lightbox-img');
+            const img = card.querySelector('img');
+            const caption = card.querySelector('.screenshot-overlay h3').textContent;
+            
+            lightboxImg.src = img.src;
+            document.querySelector('.lightbox-caption').textContent = caption;
+            lightbox.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeLightbox() {
+            const lightbox = document.getElementById('lightbox');
+            lightbox.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        // Close lightbox with escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeLightbox();
+            }
+        });
+
+        // Tab switching functionality
+        document.querySelectorAll('.terminal-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                // Remove active class from all tabs and content
+                document.querySelectorAll('.terminal-tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                
+                // Add active class to clicked tab and corresponding content
+                tab.classList.add('active');
+                document.getElementById(`${tab.dataset.tab}-content`).classList.add('active');
+            });
+        });
+
+        // Copy functionality
+        document.querySelectorAll('.copy-button').forEach(button => {
+            button.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const code = button.nextElementSibling.textContent;
+                navigator.clipboard.writeText(code);
+                
+                // Change button text temporarily
+                const originalText = button.innerHTML;
+                button.innerHTML = '<i class="fas fa-check"></i> Copied!';
+                setTimeout(() => {
+                    button.innerHTML = originalText;
+                }, 2000);
+            });
+        });
+    </script>
+        <script>
+        // Add particle animation
+        const canvas = document.getElementById('particle-canvas');
+        const ctx = canvas.getContext('2d');
+
+        // Set canvas size
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+
+        // Particle class
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 2 + 1;
+                this.speedX = Math.random() * 1 - 0.5;
+                this.speedY = Math.random() * 1 - 0.5;
+                this.opacity = Math.random() * 0.5 + 0.1;
+            }
+
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+
+                if (this.x > canvas.width) this.x = 0;
+                if (this.x < 0) this.x = canvas.width;
+                if (this.y > canvas.height) this.y = 0;
+                if (this.y < 0) this.y = canvas.height;
+            }
+
+            draw() {
+                ctx.fillStyle = `rgba(255, 255, 255, ${this.opacity})`;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        // Create particle array
+        const particles = [];
+        const particleCount = 220;
+
+        for (let i = 0; i < particleCount; i++) {
+            particles.push(new Particle());
+        }
+
+        // Animation loop
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            particles.forEach(particle => {
+                particle.update();
+                particle.draw();
+            });
+
+            // Draw connections between nearby particles
+            particles.forEach((particle1, index) => {
+                for (let j = index + 1; j < particles.length; j++) {
+                    const particle2 = particles[j];
+                    const dx = particle1.x - particle2.x;
+                    const dy = particle1.y - particle2.y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+
+                    if (distance < 100) {
+                        ctx.strokeStyle = `rgba(255, 255, 255, ${0.1 * (1 - distance/100)})`;
+                        ctx.beginPath();
+                        ctx.moveTo(particle1.x, particle1.y);
+                        ctx.lineTo(particle2.x, particle2.y);
+                        ctx.stroke();
+                    }
+                }
+            });
+
+            requestAnimationFrame(animate);
+        }
+
+        animate();
+    </script>
+</body>
+</html>

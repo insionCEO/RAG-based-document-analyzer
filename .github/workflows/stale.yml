@@ -1,0 +1,24 @@
+name: Mark stale issues and pull requests
+
+on:
+  schedule:
+    - cron: "0 0 * * *" # Runs daily at midnight
+
+jobs:
+  stale:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Close stale issues and pull requests
+      uses: actions/stale@v8
+      with:
+        repo-token: ${{ secrets.stale_bot }}
+        stale-issue-message: "This issue has been marked as stale due to inactivity. Please respond to keep it open."
+        stale-pr-message: "This pull request has been marked as stale due to inactivity. Please update it to keep it open."
+        close-issue-message: "This issue has been closed due to lack of response."
+        close-pr-message: "This pull request has been closed due to lack of response."
+        days-before-stale: 7 # Days before an issue or PR is marked as stale
+        days-before-close: 3 # Days before a stale issue or PR is closed
+        stale-issue-label: "stale" # Label added to stale issues
+        exempt-issue-labels: "wontfix,bug" # Labels that exempt issues from being marked as stale
+        only-issues: true # Only affect issues, not PRs

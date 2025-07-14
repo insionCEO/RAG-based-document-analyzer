@@ -1,0 +1,39 @@
+name: Notify Discord on Release
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  discord_notification:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send Discord Notification
+        uses: sarisia/actions-status-discord@v1.15.3
+        with:
+          webhook: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          username: "GitHub Bot 🤖"
+          avatar_url: "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png"
+          content: |
+            **🚀 New Release Published!**
+            📌 **Repository:** `${{ github.repository }}`
+            🏷️ **Version:** `${{ github.event.release.tag_name }}`
+            📜 **Description:**
+            ```
+            ${{ github.event.release.body }}
+            ```
+            🔗 **[View Release](${{ github.event.release.html_url }})**
+          embeds: |
+            [
+              {
+                "title": "🎉 New Release: ${{ github.event.release.tag_name }}",
+                "description": "${{ github.event.release.body }}",
+                "url": "${{ github.event.release.html_url }}",
+                "color": 16776960,
+                "footer": {
+                  "text": "GitHub Actions",
+                  "icon_url": "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png"
+                },
+                "timestamp": "${{ github.event.release.published_at }}"
+              }
+            ]
