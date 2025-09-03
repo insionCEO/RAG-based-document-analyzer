@@ -13,7 +13,10 @@ A low-latency, high-performance **Maximal Extractable Value (MEV)** bot engineer
 This MEV bot is a sophisticated trading system designed to identify and capitalize on blockchain mempool inefficiencies in real-time. Built with a focus on performance and reliability, it processes millions of potential trade routes per second to execute profitable strategies before inclusion in a block. Its modular architecture allows for seamless integration with private mempools and leading block builders, ensuring priority execution and maximum yield.
 
 **Video Overview:** For a visual demonstration of the bot's architecture and live trading signals, watch our technical deep-dive below:
+
 https://github.com/user-attachments/assets/d7e23139-25d9-41fa-94cb-977d285200a1
+
+
 
 ## ⚡ Key Capabilities & Technical Features
 
